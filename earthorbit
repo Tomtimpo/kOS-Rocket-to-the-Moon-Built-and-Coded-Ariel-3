@@ -1,0 +1,144 @@
+CLEARSCREEN.
+set x to 1.
+
+Print ("Autonomous Systems Engaged...").
+wait 1.
+print ("System Start...").
+
+
+LOCK THROTTLE TO 1.0.
+
+stage.
+
+print("Lift Off started...").
+print ("").
+SET MYSTEER TO HEADING(90,90).
+LOCK STEERING TO MYSTEER.
+
+function stagey {
+    WHEN Maxthrust = 0 THEN {
+    PRINT "Staging".
+    STAGE.
+    
+    }.
+
+
+}
+
+
+LOCK STEERING TO MYSTEER.
+UNTIL SHIP:APOAPSIS > 109000 { 
+     
+    stagey ().
+    
+    IF SHIP:VELOCITY:SURFACE:MAG < 100 {
+        
+        SET MYSTEER TO HEADING(90,90).
+
+    
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 100 AND SHIP:VELOCITY:SURFACE:MAG < 200 {
+        SET MYSTEER TO HEADING(90,80).
+        PRINT "Pitching to 80 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+   
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 200 AND SHIP:VELOCITY:SURFACE:MAG < 300 {
+        SET MYSTEER TO HEADING(90,70).
+        PRINT "Pitching to 70 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 300 AND SHIP:VELOCITY:SURFACE:MAG < 400 {
+        SET MYSTEER TO HEADING(90,60).
+        PRINT "Pitching to 60 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 400 AND SHIP:VELOCITY:SURFACE:MAG < 500 {
+        SET MYSTEER TO HEADING(90,50).
+        PRINT "Pitching to 50 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 500 AND SHIP:VELOCITY:SURFACE:MAG < 600 {
+        SET MYSTEER TO HEADING(90,40).
+        PRINT "Pitching to 40 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 600 AND SHIP:VELOCITY:SURFACE:MAG < 700 {
+        SET MYSTEER TO HEADING(90,30).
+        PRINT "Pitching to 30 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 700 AND SHIP:VELOCITY:SURFACE:MAG < 800 {
+        SET MYSTEER TO HEADING(90,11).
+        PRINT "Pitching to 20 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+    
+    } ELSE IF SHIP:VELOCITY:SURFACE:MAG >= 800 {
+        SET MYSTEER TO HEADING(90,10).
+        PRINT "Pitching to 10 degrees" AT(0,15).
+        PRINT ROUND(SHIP:APOAPSIS,0) AT (0,16).
+
+    }.
+
+}.
+
+
+
+
+print ("100km apoapsis reached...").
+print ("").
+PRINT ("MECO").
+print ("").
+lock throttle to 0.
+wait 0.5.
+stage.
+
+set ship:control:pilotmainthrottle to 0.
+
+
+
+
+lock steering to prograde.
+
+wait 40.
+
+set kuniverse:timewarp:rate to 4.
+wait until ship:altitude > 75000.
+set kuniverse:timewarp:rate to 1.
+wait 2.
+set kuniverse:timewarp:rate to 10.
+wait until eta:apoapsis < 30.
+set kuniverse:timewarp:rate to 1.
+wait 0.5.
+lock steering to prograde.
+
+
+wait until altitude >= apoapsis.
+
+print ("Orbit Burn Start...").
+print ("").
+lock throttle to 1.
+wait until SHIP:periapsis >= 100000.
+
+lock throttle to 0.
+
+print ("Engine Active...").
+stage.
+print ("").
+wait 2.
+print ("Orbit Complete...").
+print ("").
+wait 2.
+print ("Orbit Stats : ").
+print ("").
+wait 1.
+print ("You are in orbit around : " + Orbit:body + "...").
+print ("").
+print ("Apoapsis Height : " + Orbit:apoapsis + "m").
+print ("Periapsis Height : " + Orbit:periapsis + "m").
+print ("Inclination : " + Orbit:Inclination + "^o").
+print ("Eccentricity : " + Orbit:Eccentricity + "^o").
+print ("Position : " + Orbit:position).
+print ("Velocity : " + Orbit:velocity + "m/s").
+
+
